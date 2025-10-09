@@ -448,4 +448,8 @@ addslashes()函数，在指定的预定义字符（'，"，\，NUL）前添加�
 ?id=-1' union --+b%0A select 1,2,group_concat(table_name) --+b%0A from sys.schema_table_statistics_with_buffer where table_schema='security' --+ 
 
 
+# 堆叠注入
+
+使用;结束一个语句，并在后面加上新的可执行命令。
+
 
